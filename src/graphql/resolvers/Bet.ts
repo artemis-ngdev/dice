@@ -1,10 +1,8 @@
 import { Arg, Ctx, FieldResolver, Int, Mutation, Query, Resolver, Root } from "type-graphql"
 import { IGraphqlContext } from ".."
-import Bet, { BetUpsertParams, initBet } from "../../models/Bet"
-import User from "../../models/User"
+import Bet, { BetUpsertParams } from "../../database/models/Bet"
+import User from "../../database/models/User"
 import {Model, Sequelize} from 'sequelize-typescript';
-import ormConfig from "../../orm.config";
-import ModelManager from "sequelize/types/lib/model-manager";
 
 @Resolver(() => Bet)
 export class BetResolver {
@@ -20,23 +18,23 @@ export class BetResolver {
     return await dsFactory.getBetDS().getById(id)    
   }
 
- 
-
+ // here , I assume  that the best bet is the one that has the  the maximum chance with the maximum betamount
+ // implicitely the payout will be the maximun 
   @Query((returns) => [Bet], {description: 'Return a distinct list of the best bet each user has made'})
   async getBestBetPerUser(@Arg('limit',type => Int, {nullable: true}) limit: number,  @Ctx() ctx: IGraphqlContext) :Promise<Model<Bet, Bet>[]>{
     const {dsFactory } = ctx
     const clause =  {  
           attributes: [
-            "userId", "win",
-            [Sequelize.fn('MIN', Sequelize.col('betAmount')), 'betAmount'],
-            [Sequelize.fn('MAX', Sequelize.col('payout')), 'payout'],
+            "userId", "win","payout",
+            [Sequelize.fn('MAX', Sequelize.col('betAmount')), 'betAmount'],
+            // [Sequelize.fn('MAX', Sequelize.col('payout')), 'payout'],
             [Sequelize.fn('MAX', Sequelize.col('chance')), 'chance'],
             ],
            where: {
             win: true,
             },
            limit,
-           group: ["userId", "win"],
+           group: ["userId", "win", "payout"],
           //  include: [ { model: initBet(ormConfig), as: 'Div' } ],
 
           //  include:[{all:true}] ,

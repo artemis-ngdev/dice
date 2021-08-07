@@ -1,5 +1,5 @@
 import { Sequelize } from "sequelize-typescript";
-import Bet, { BetUpsertParams } from "../../models/Bet";
+import Bet, { BetUpsertParams } from "../models/Bet";
 import { ADataService } from "./ADataService";
 
 export class BetDataService extends ADataService<Bet> {
@@ -15,7 +15,6 @@ export class BetDataService extends ADataService<Bet> {
 			return savedBed
 		}) 
 	}
-
  	 
   }
   

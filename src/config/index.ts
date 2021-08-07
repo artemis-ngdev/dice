@@ -3,14 +3,11 @@ import fs from 'fs'
 import dotenv from 'dotenv'
 import {ConfigSchema} from './schema'
 import { Sequelize } from 'sequelize-typescript'
-import Bet, { initBet } from '../models/Bet'
-import User, { initUser } from '../models/User'
- import { DataTypes } from 'sequelize/types';
-
-const CURRENT_FOLDER = path.basename(path.join(__dirname, '..'))
-
-const BASE_PATH = `${CURRENT_FOLDER}`
-
+import Bet, { initBet } from '../database/models/Bet'
+import User, { initUser } from '../database/models/User'
+ 
+ 
+ 
 export class AppConfig {
   private readonly _env: Record<string, string>
   constructor(envFilePath?: string) {
@@ -27,42 +24,22 @@ export class AppConfig {
     return +this._env.PORT
   }
 
-  public get server() {
-    return {
-      allowAuthSpoofing: Boolean(this._env.ALLOW_AUTH_SPOOFING),
-      cookieDomain: this._env.COOKIE_DOMAIN,
-      traceGraphql: Boolean(this._env.TRACE_GRAPHQL),
-      showOriginalError: Boolean(this._env.SHOW_ORIGINAL_ERROR),
-    }
-  }
 
   public get environment(): string {
     return this._env.NODE_ENV
   }
 
-  public get isTestMode(): boolean {
-    return !['production', 'staging'].includes(this.environment)
-  }
-
-  public get logLevel(): string {
-    return this._env.LOGGER_LEVEL
-  }
- 
   public get ormPostgresOptions(): Sequelize {
     const sequelize = new Sequelize(
-      // this._env.DATABASE_URL,
       {
-        database: 'dice',
+        database: this._env.DATABASE_NAME,
         dialect: 'postgres',
-        username: 'postgres',
-        password: '',
+        username:   this._env.DATABASE_USERNAME,
+        password: this._env.DATABASE_PASSWORD,
         port: 5432,
         repositoryMode: true,
         logging: false,
         models: [User, Bet],
-        // modelPaths:  [`${BASE_PATH}/models/*`],
-        // sync: { force: true },
-        // models: [__dirname + '/models'] // or [Player, Team],
         define: {
           freezeTableName: false,
           timestamps: false,

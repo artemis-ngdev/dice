@@ -1,8 +1,8 @@
 import { Model } from "sequelize-typescript"
 import { Arg, Ctx, FieldResolver, Int, Query, Resolver, Root } from "type-graphql"
 import { IGraphqlContext } from ".."
-import Bet from "../../models/Bet"
-import User from "../../models/User"
+import Bet from "../../database/models/Bet"
+import User from "../../database/models/User"
 
 @Resolver(() => User)
 export class UserResolver {
@@ -25,8 +25,6 @@ export class UserResolver {
   @FieldResolver(() => [Bet])
   async bets(@Root() user: User, @Ctx() ctx: IGraphqlContext): Promise<Model<Bet, Bet>[]>  {
     const {dsFactory} = ctx
-    // dont remove line with test ppleaese, does not return on mutation
-    // const test = await dsFactory.getProjectUserDS().getMany()
     const bets = await dsFactory.getBetDS().repository.findAll({where: {userId: user.id}})
     return bets
   }
