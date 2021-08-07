@@ -26,6 +26,7 @@
     "pg-hstore": "^2.3.3",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^6.6.5",
+    "sequelize-auto-migrations": "^1.0.3",
     "sequelize-typescript": "^2.1.0",
     "sequelize-typescript-migration": "0.0.1-beta.3",
     "type-graphql": "1.1.0",
