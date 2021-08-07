@@ -1,0 +1,9 @@
+{
+    "extends": "./tsconfig.json",
+    "include": ["src/**/*.ts", "bugsnagAppender.ts", ".eslintrc.js"],
+    "exclude": [
+      "**/generated_frontend",
+      "**/node_modules",
+      "**/build"]
+  }
+  
