@@ -18,8 +18,6 @@ export class BetResolver {
     return await dsFactory.getBetDS().getById(id)    
   }
 
- // here , I assume  that the best bet is the one that has the  the maximum chance with the maximum betamount
- // implicitely the payout will be the maximun 
   @Query((returns) => [Bet], {description: 'Return a distinct list of the best bet each user has made'})
   async getBestBetPerUser(@Arg('limit',type => Int, {nullable: true}) limit: number,  @Ctx() ctx: IGraphqlContext) :Promise<Model<Bet, Bet>[]>{
     const {dsFactory } = ctx
@@ -35,17 +33,6 @@ export class BetResolver {
             },
            limit,
            group: ["userId", "win", "payout", "id"],
-          //  include: [ { model: initBet(ormConfig), as: 'Div' } ],
-
-          //  include:[{all:true}] ,
-          //  include: [
-          //   {
-          //     model: initBet(ormConfig),
-          //     required: false
-          //   }
-          // ],
-          // 
-          // raw: true,
       }       
     const result = await dsFactory.getBetDS().getMany(clause) 
     return  result

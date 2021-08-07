@@ -3,7 +3,6 @@ import app from './server'
 import appConfig from './config'
 import ormConfig from './orm.config'
  
- 
 export const initDatabaseConnection = async () => {
   try {
     return ormConfig

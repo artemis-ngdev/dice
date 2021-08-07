@@ -1,4 +1,4 @@
-import { Table, Model, Column, DataType, AutoIncrement, PrimaryKey, Default, HasMany, AllowNull, Sequelize } from 'sequelize-typescript'
+import { Table, Model, Column, DataType, AutoIncrement, PrimaryKey, HasMany, Sequelize } from 'sequelize-typescript'
 import { Field, Float, Int, ObjectType } from 'type-graphql';
 import Bet, { BetUpsertParams } from './Bet';
 
@@ -29,7 +29,6 @@ export default class User extends Model<User> {
 
   @Field(() => Float)
   @Column(DataType.FLOAT)	
-  // @AllowNull(true)	
   balance: number;
 
   @Field(() => [Bet])
@@ -43,28 +42,5 @@ export function initUser(sequalize: Sequelize): any {
     name: { type: DataType.STRING },
    };
   const User = sequalize.define("User", attributes);
-    // User.hasMany(Bet)
-
   return User;
 };
-
-// User.init(
-//   {
-//     id: {
-//       type: DataType.INTEGER,
-//       autoIncrement: true,
-//       primaryKey: true,
-//     },
-//     name: {
-//       type: DataType.STRING,
-//     },
-//   },
-//   {
-//     // tableName: 'Bet',
-//     sequelize,
-//     //  modelName: 'User',
-
-//   },
-// );
-
- 
