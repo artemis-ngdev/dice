@@ -1,8 +1,8 @@
 import { Model } from "sequelize-typescript"
 import { Arg, Ctx, FieldResolver, Int, Query, Resolver, Root } from "type-graphql"
 import { IGraphqlContext } from ".."
-import Bet from "../../database/models/Bet"
-import User from "../../database/models/User"
+import Bet from "../../models/Bet"
+import User from "../../models/User"
 
 @Resolver(() => User)
 export class UserResolver {

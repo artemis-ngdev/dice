@@ -1,7 +1,7 @@
 import {  Sequelize,  Table, Model, Column, DataType, AutoIncrement, PrimaryKey, Default, AllowNull, ForeignKey, BelongsTo } from 'sequelize-typescript'
 // import { DataTypes } from 'sequelize/types';
 import { Field, Int,Float, ObjectType } from 'type-graphql';
-import ormConfig from '../../orm.config';
+import ormConfig from '../orm.config';
 import User from './User';
  
 export interface BetUpsertParams {

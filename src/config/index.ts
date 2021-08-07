@@ -1,12 +1,14 @@
-import path from 'path'
 import fs from 'fs'
 import dotenv from 'dotenv'
 import {ConfigSchema} from './schema'
 import { Sequelize } from 'sequelize-typescript'
-import Bet, { initBet } from '../database/models/Bet'
-import User, { initUser } from '../database/models/User'
+import Bet, { initBet } from '../models/Bet'
+import User, { initUser } from '../models/User'
+import path from 'path'
+import { SequelizeTypescriptMigration } from 'sequelize-typescript-migration'
  
- 
+const CURRENT_FOLDER = path.basename(path.join(__dirname, '..'))
+const BASE_PATH = `${CURRENT_FOLDER}`
  
 export class AppConfig {
   private readonly _env: Record<string, string>
@@ -49,8 +51,8 @@ export class AppConfig {
        initUser(sequelize)
 
       sequelize.addModels([User, Bet])
-
       sequelize.authenticate()
+
     return sequelize
   } 
  

@@ -1,7 +1,7 @@
 import { Arg, Ctx, FieldResolver, Int, Mutation, Query, Resolver, Root } from "type-graphql"
 import { IGraphqlContext } from ".."
-import Bet, { BetUpsertParams } from "../../database/models/Bet"
-import User from "../../database/models/User"
+import Bet, { BetUpsertParams } from "../../models/Bet"
+import User from "../../models/User"
 import {Model, Sequelize} from 'sequelize-typescript';
 
 @Resolver(() => Bet)
@@ -25,7 +25,7 @@ export class BetResolver {
     const {dsFactory } = ctx
     const clause =  {  
           attributes: [
-            "userId", "win","payout",
+            "userId", "win","payout", "id",
             [Sequelize.fn('MAX', Sequelize.col('betAmount')), 'betAmount'],
             // [Sequelize.fn('MAX', Sequelize.col('payout')), 'payout'],
             [Sequelize.fn('MAX', Sequelize.col('chance')), 'chance'],
@@ -34,7 +34,7 @@ export class BetResolver {
             win: true,
             },
            limit,
-           group: ["userId", "win", "payout"],
+           group: ["userId", "win", "payout", "id"],
           //  include: [ { model: initBet(ormConfig), as: 'Div' } ],
 
           //  include:[{all:true}] ,
