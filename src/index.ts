@@ -1,7 +1,9 @@
 import http from 'http'
-import app from './server'
 import appConfig from './config'
 import ormConfig from './orm.config'
+import express from 'express'
+import { useTransaction } from './server/transaction'
+import graphqlApp from './graphql'
  
 export const initDatabaseConnection = async () => {
   try {
@@ -14,10 +16,13 @@ export const initDatabaseConnection = async () => {
 }
 
 let _server: http.Server
+const app = express()
+
+app.use('*', useTransaction)
+app.use(graphqlApp)
 
 const startServer = async () =>
   initDatabaseConnection().then(async (ormConfig) => {
-    // await ormConfig.sync({force: true});
     await ormConfig.sync();
     const {port} = appConfig
     _server = http.createServer(app)

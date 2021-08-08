@@ -5,11 +5,9 @@ import {ExpressContext} from 'apollo-server-express/dist/ApolloServer'
 import {buildSchemaSync} from 'type-graphql'
 import {DataServiceFactory} from '../database/services/Factory'
 import {resolvers} from './resolvers'
-import { Sequelize } from 'sequelize-typescript'
  
 export interface IGraphqlContext {
   req: Express.Request
-  entityManager?: Sequelize
   dsFactory?: DataServiceFactory
  }
 
@@ -26,11 +24,9 @@ export const getGraphqlServer = (context: ContextFunction<ExpressContext, IGraph
 }
 
 const graphqlContext: ContextFunction<ExpressContext, IGraphqlContext> = ({req, connection}): IGraphqlContext => {
-   if (connection) return connection.context
-
+  if (connection) return connection.context
   const {trxContext: trx, dsFactory} = req
- 
-  return {req, entityManager: trx?.manager, dsFactory}
+  return {req, dsFactory}
 }
 
 export const graphqlServer = getGraphqlServer(graphqlContext)
