@@ -1,4 +1,4 @@
-import {  Sequelize,  Table, Model, Column, DataType, AutoIncrement, PrimaryKey, Default, AllowNull, ForeignKey, BelongsTo } from 'sequelize-typescript'
+import {  Sequelize,  Table, Model, Column, DataType, AutoIncrement, PrimaryKey, Default, AllowNull, ForeignKey, BelongsTo, Max } from 'sequelize-typescript'
 import { Field, Int,Float, ObjectType } from 'type-graphql';
 import User from './User';
  
@@ -40,6 +40,7 @@ export default class Bet extends Model<Bet> {
   @Column(DataType.FLOAT)	
   betAmount: number;
 
+  @Max(1)
   @Field(() => Float,  {nullable: true})
   @Column(DataType.FLOAT)	
   chance: number;

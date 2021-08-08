@@ -17,6 +17,7 @@ let _server: http.Server
 
 const startServer = async () =>
   initDatabaseConnection().then(async (ormConfig) => {
+    // await ormConfig.sync({force: true});
     await ormConfig.sync();
     const {port} = appConfig
     _server = http.createServer(app)

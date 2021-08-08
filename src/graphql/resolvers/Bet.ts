@@ -3,6 +3,8 @@ import { IGraphqlContext } from ".."
 import Bet, { BetUpsertParams } from "../../models/Bet"
 import User from "../../models/User"
 import {Model, Sequelize} from 'sequelize-typescript';
+import { calculateOdd, generateResult, getBet } from "../../utils/common";
+
 
 @Resolver(() => Bet)
 export class BetResolver {
@@ -38,7 +40,6 @@ export class BetResolver {
     return  result
   }
 
- 
   @Mutation((returns) => Bet)
   async createBet(
    @Arg('userId' ,type => Int, {nullable: false}) userId: number,
@@ -52,16 +53,23 @@ export class BetResolver {
         betAmount,  
         win: false      
     }
+    
     const user = await dsFactory.getUserDS().getById(userId)
-    // validation for balance 
     if (user.getDataValue('balance') < betAmount) {
       throw Error('You do not have enough credits to place this bet!')
     }
-      params.payout = params.betAmount * chance 
-      if (params.payout > 0) { // assuming that if payout is positive then is a win
-          params.win = true
-      }
-  
+     const userBet = Math.floor(Math.random() * 6) + 1;
+     const betResult = generateResult(chance, userBet) 
+
+     if (betResult === userBet) {
+        params.win = true
+     }
+     if ( params.win ) {
+      const odd = calculateOdd(chance)
+      params.payout = params.betAmount * odd
+     }
+   
+    
     return dsFactory.getBetDS().createBet({...params}).then(async (bet) => {
       if (bet) {
         // update balance 

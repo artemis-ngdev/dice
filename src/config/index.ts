@@ -5,7 +5,6 @@ import { Sequelize } from 'sequelize-typescript'
 import Bet, { initBet } from '../models/Bet'
 import User, { initUser } from '../models/User'
 import path from 'path'
-import { SequelizeTypescriptMigration } from 'sequelize-typescript-migration'
  
 const CURRENT_FOLDER = path.basename(path.join(__dirname, '..'))
 const BASE_PATH = `${CURRENT_FOLDER}`
