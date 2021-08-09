@@ -3,7 +3,7 @@ import { IGraphqlContext } from ".."
 import Bet, { BetUpsertParams } from "../../models/Bet"
 import User from "../../models/User"
 import {Model, Sequelize} from 'sequelize-typescript';
-import { calculateOdd, generateResult, getBet } from "../../utils/common";
+import { calculateOdd, generateResult } from "../../utils/common";
 
 
 @Resolver(() => Bet)
@@ -24,18 +24,18 @@ export class BetResolver {
   async getBestBetPerUser(@Arg('limit',type => Int, {nullable: true}) limit: number,  @Ctx() ctx: IGraphqlContext) :Promise<Model<Bet, Bet>[]>{
     const {dsFactory } = ctx
     const clause =  {  
-          attributes: [
-            "userId", "win","payout", "id",
-            [Sequelize.fn('MAX', Sequelize.col('betAmount')), 'betAmount'],
-            // [Sequelize.fn('MAX', Sequelize.col('payout')), 'payout'],
-            [Sequelize.fn('MAX', Sequelize.col('chance')), 'chance'],
-            ],
-           where: {
-            win: true,
-            },
-           limit,
-           group: ["userId", "win", "payout", "id"],
-      }       
+      attributes: [
+        "userId", "win" ,
+        [Sequelize.fn('MAX', Sequelize.col('betAmount')), 'betAmount'],
+        [Sequelize.fn('MAX', Sequelize.col('payout')), 'payout'],
+        [Sequelize.fn('MAX', Sequelize.col('chance')), 'chance'],
+        ],
+       where: {
+        win: true,
+        },
+       limit,
+       group: ["userId", "win" ]           
+    }         
     const result = await dsFactory.getBetDS().getMany(clause) 
     return  result
   }

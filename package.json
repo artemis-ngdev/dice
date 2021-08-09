@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev --transpile-only --ignore-watch node_modules --respawn  --no-notify ./src/index.ts",
-    "migrate-db": "./node_modules/.bin/ts-node-dev --transpile-only  ./src/scripts/migrate.ts",
+    "seed:all": "./node_modules/.bin/ts-node-dev --transpile-only  ./src/script/seed.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile:ts": "tsc --skipLibCheck -p  ./tsconfig.build.json",
     "build": "npm run clean:build && npm run compile:ts",
@@ -15,6 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "apollo-server-express": "2.18.2",
+    "bluebird": "^3.7.2",
     "dotenv": "8.2.0",
     "express": "4.17.1",
     "fs": "0.0.1-security",
@@ -31,6 +32,7 @@
     "typescript": "^4.2.3"
   },
   "devDependencies": {
+    "@types/bluebird": "^3.5.36",
     "@types/express": "^4.17.13",
     "@types/lodash": "^4.14.172",
     "@types/node": "^16.4.13",

@@ -2,7 +2,7 @@ import { Table, Model, Column, DataType, AutoIncrement, PrimaryKey, HasMany, Seq
 import { Field, Float, Int, ObjectType } from 'type-graphql';
 import Bet, { BetUpsertParams } from './Bet';
 
-interface UserUpsertParams {
+export interface UserUpsertParams {
   id?: number
   name?: string
   balance?: number
