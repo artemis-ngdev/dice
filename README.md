@@ -1,4 +1,4 @@
-## Ancient Gaming
+## Dice
 
 Instructions:
 
